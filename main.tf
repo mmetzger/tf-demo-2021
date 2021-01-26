@@ -57,6 +57,7 @@ resource "aws_security_group" "allow_web" {
   ingress {
     description = "Web from VPC"
     to_port = 80
+    from_port = 0
     protocol = "tcp"
     cidr_blocks = [aws_vpc.vpc.cidr_block]
   }
