@@ -57,7 +57,7 @@ resource "aws_security_group" "allow_web" {
   ingress {
     description = "Web from VPC"
     to_port = 80
-    from_port = 0
+    from_port = 80
     protocol = "tcp"
     cidr_blocks = [aws_vpc.vpc.cidr_block]
   }
@@ -82,5 +82,5 @@ output "domain-name" {
 }
 
 output "application-url" {
-  value = "${aws_instance.web.public_dns}/index.php"
+  value = "${aws_instance.web.public_ip}/index.php"
 }
