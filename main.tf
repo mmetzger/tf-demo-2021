@@ -16,6 +16,7 @@ variable "cidr_block" {
 
 resource "aws_vpc" "vpc" {
   cidr_block = var.cidr_block
+  enable_dns_hostnames = "true"
   tags = {
     Name = "${random_pet.name.id}_vpc"
     Env = random_pet.name.id
@@ -26,7 +27,6 @@ resource "aws_subnet" "subnet" {
   vpc_id = aws_vpc.vpc.id
   cidr_block = var.subnet
   map_public_ip_on_launch = "true"
-  enable_dns_hostnames = "true"
   tags = {
     Name = "${random_pet.name.id}_subnet"
     Env = random_pet.name.id
