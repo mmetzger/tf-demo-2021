@@ -57,8 +57,8 @@ resource "aws_security_group" "allow_web" {
   vpc_id = aws_vpc.vpc.id
   ingress {
     description = "Web from VPC"
-    to_port = 80
-    from_port = 80
+    to_port = 0
+    from_port = 0
     protocol = "tcp"
     cidr_blocks = [aws_vpc.vpc.cidr_block]
   }
@@ -78,7 +78,7 @@ resource "aws_instance" "web" {
   instance_type = "t3.micro"
   user_data = file("init-script.sh")
   subnet_id = aws_subnet.subnet.id
-  vpc_security_group_ids = ["default"]
+  vpc_security_group_ids = [aws_security_group.allow_web.id]
   depends_on = [aws_internet_gateway.gw]
   tags = {
     Name = random_pet.name.id
