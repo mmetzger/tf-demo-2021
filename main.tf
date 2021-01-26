@@ -26,6 +26,7 @@ resource "aws_subnet" "subnet" {
   vpc_id = aws_vpc.vpc.id
   cidr_block = var.subnet
   map_public_ip_on_launch = "true"
+  enable_dns_hostnames = "true"
   tags = {
     Name = "${random_pet.name.id}_subnet"
     Env = random_pet.name.id
@@ -78,6 +79,7 @@ resource "aws_instance" "web" {
   user_data = file("init-script.sh")
   subnet_id = aws_subnet.subnet.id
   vpc_security_group_ids = [aws_security_group.allow_web.id]
+  depends_on = [aws_internet_gateway.gw]
   tags = {
     Name = random_pet.name.id
   }
