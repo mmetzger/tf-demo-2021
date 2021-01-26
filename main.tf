@@ -17,6 +17,8 @@ variable "cidr_block" {
 resource "aws_vpc" "vpc" {
   cidr_block = var.cidr_block
   enable_dns_hostnames = "true"
+  enable_nat_gateway = true
+  single_nat_gateway = true
   tags = {
     Name = "${random_pet.name.id}_vpc"
     Env = random_pet.name.id
