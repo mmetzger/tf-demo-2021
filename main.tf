@@ -40,8 +40,8 @@ resource "aws_internet_gateway" "gw" {
     Env = random_pet.name.id
   }
 }
-resource "aws_default_route_table" "route_table" {
-  default_route_table_id = aws_vpc.vpc.default_route_table_id
+resource "aws_route_table" "route_table" {
+  vpc_id = aws_vpc.vpc.id
   route {
     cidr_block = "0.0.0.0/0"
     gateway_id = aws_internet_gateway.gw.id
@@ -51,6 +51,11 @@ resource "aws_default_route_table" "route_table" {
     env = random_pet.name.id
   }
 }
+resource "aws_route_table_association" "rta_subnet_public" {
+  subnet_id = "${aws_subnet.subnet.id}"
+  route_table_id = "${aws_route_table.route_table.id}"
+}
+
 resource "aws_security_group" "allow_web" {
   name = "allow_web"
   description = "Allow inbound web traffic"
@@ -75,6 +80,7 @@ resource "aws_security_group" "allow_web" {
 
 resource "aws_instance" "web" {
   ami = "ami-a0cfeed8"
+  #ami = "ami-0438cf1f8a8765051"
   instance_type = "t3.micro"
   user_data = file("init-script.sh")
   subnet_id = aws_subnet.subnet.id
