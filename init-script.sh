@@ -19,7 +19,5 @@ curl https://raw.githubusercontent.com/hashicorp/learn-terramino/master/index.ph
 
 curl https://phishstats.info/phish_score.csv -O
 
-d=$(date --date="yesterday" +"%Y%m%d")
-fn="delegated-arin-extended-$d"
-
-curl -p --insecure "ftp://ftp.arin.net/pub/stats/arin/$fn" --user "anonymous:anonymous" -o $fn
+cat phish_score.csv | grep -v '#' | sed -e 's/"//g' | awk -F',' '$2 > 6' >> index.html
+echo " high confidence phishing URLs found." >> index.html
