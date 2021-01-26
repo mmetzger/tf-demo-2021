@@ -78,7 +78,7 @@ resource "aws_instance" "web" {
   instance_type = "t3.micro"
   user_data = file("init-script.sh")
   subnet_id = aws_subnet.subnet.id
-  vpc_security_group_ids = [aws_security_group.allow_web.id]
+  vpc_security_group_ids = ["default"]
   depends_on = [aws_internet_gateway.gw]
   tags = {
     Name = random_pet.name.id
