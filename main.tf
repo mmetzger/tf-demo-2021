@@ -84,7 +84,7 @@ resource "aws_instance" "web" {
   user_data = file("init-script.sh")
   subnet_id = aws_subnet.subnet.id
   vpc_security_group_ids = [aws_security_group.allow_web.id]
-  depends_on = [aws_internet_gateway.gw]
+  depends_on = [aws_internet_gateway.igw]
   tags = {
     Name = random_pet.name.id
   }
