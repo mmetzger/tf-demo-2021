@@ -33,7 +33,7 @@ resource "aws_subnet" "subnet" {
   }
 }
 
-resource "aws_internet_gateway" "gw" {
+resource "aws_internet_gateway" "igw" {
   vpc_id = aws_vpc.vpc.id
   tags = {
     Name = "${random_pet.name.id}_gw"
@@ -44,7 +44,7 @@ resource "aws_route_table" "route_table" {
   vpc_id = aws_vpc.vpc.id
   route {
     cidr_block = "0.0.0.0/0"
-    gateway_id = aws_internet_gateway.gw.id
+    gateway_id = aws_internet_gateway.igw.id
   }
   tags = {
     Name = "default route table"
@@ -52,8 +52,8 @@ resource "aws_route_table" "route_table" {
   }
 }
 resource "aws_route_table_association" "rta_subnet_public" {
-  subnet_id = "${aws_subnet.subnet.id}"
-  route_table_id = "${aws_route_table.route_table.id}"
+  subnet_id = aws_subnet.subnet.id
+  route_table_id = aws_route_table.route_table.id
 }
 
 resource "aws_security_group" "allow_web" {
@@ -62,10 +62,10 @@ resource "aws_security_group" "allow_web" {
   vpc_id = aws_vpc.vpc.id
   ingress {
     description = "Web from VPC"
-    to_port = 0
-    from_port = 0
+    to_port = 80
+    from_port = 80
     protocol = "tcp"
-    cidr_blocks = [aws_vpc.vpc.cidr_block]
+    cidr_blocks = ["0.0.0.0/0"]
   }
   egress {
     from_port = 0
