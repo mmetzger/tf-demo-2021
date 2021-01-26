@@ -74,7 +74,8 @@ resource "aws_security_group" "allow_web" {
 }
 
 resource "aws_instance" "web" {
-  ami = "ami-a0cfeed8"
+  #ami = "ami-a0cfeed8"
+  ami = "ami-0438cf1f8a8765051"
   instance_type = "t3.micro"
   user_data = file("init-script.sh")
   subnet_id = aws_subnet.subnet.id
