@@ -77,13 +77,40 @@ resource "aws_security_group" "allow_web" {
     Name = "allow_web"
   }
 }
+resource "aws_security_group" "allow_ssh" {
+  name = "allow_ssh"
+  description = "Allow inbound ssh traffic"
+  vpc_id = aws_vpc.vpc.id
+  ingress {
+    description = "ssh from VPC"
+    to_port = 22
+    from_port = 22
+    protocol = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+  egress {
+    from_port = 0
+    to_port = 0
+    protocol = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+  tags = {
+    Name = "allow_ssh"
+  }
+}
+
+resource "aws_key_pair" "ec2key" {
+  key_name = "publicKey"
+  public_key = file("pubkey")
+}
 
 resource "aws_instance" "web" {
   ami = "ami-a0cfeed8"
   instance_type = "t3.micro"
   user_data = file("init-script.sh")
   subnet_id = aws_subnet.subnet.id
-  vpc_security_group_ids = [aws_security_group.allow_web.id]
+  vpc_security_group_ids = [aws_security_group.allow_web.id, aws_security_group.allow_ssh.id]
+  key_name = aws_key_pair.ec2key.key_name
   depends_on = [aws_internet_gateway.igw]
   tags = {
     Name = random_pet.name.id
