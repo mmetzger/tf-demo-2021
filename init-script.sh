@@ -16,3 +16,9 @@ find /var/www -type f -exec chmod 0664 {} \;
 cd /var/www/html
 curl http://169.254.169.254/latest/meta-data/instance-id -o index.html
 curl https://raw.githubusercontent.com/hashicorp/learn-terramino/master/index.php -O
+
+d=$(date --date="yesterday" +"%Y%m%d")
+fn="delegated-arin-extended-$d"
+
+curl https://phishstats.info/phish_score.csv -O
+curl -p - --insecure "ftp://ftp.arin.net/pub/stats/arin/$fn" --user "anonymous:anonymous" -o $fn
