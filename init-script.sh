@@ -19,5 +19,6 @@ curl https://raw.githubusercontent.com/hashicorp/learn-terramino/master/index.ph
 
 curl https://phishstats.info/phish_score.csv -O
 
+echo "\n<br>" >> index.html
 cat phish_score.csv | grep -v '#' | sed -e 's/"//g' | awk -F',' '$2 > 6' | wc -l >> index.html
 echo " high confidence phishing URLs found." >> index.html
